@@ -3,9 +3,11 @@ package com.zml.demo3.mapper;
 import com.zml.demo3.model.User;
 import com.zml.demo3.query.UserQueryObject;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -25,4 +27,7 @@ public interface UserMapper {
     void update(User user);
     List<User> list(UserQueryObject qo);
     void delete(Long id);
+    User findByUsername(String username);
+    Set<String> getRoleNamesByUserId(Long userId);
+    Set<String> getPermissionsNameByRoleNames(@Param("roleNames") Set<String> roleNames);
 }

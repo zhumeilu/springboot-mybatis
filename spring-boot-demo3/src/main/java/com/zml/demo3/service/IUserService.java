@@ -5,6 +5,7 @@ import com.zml.demo3.model.User;
 import com.zml.demo3.query.UserQueryObject;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,4 +22,7 @@ public interface IUserService {
     void update(User user);
     List<User> list(UserQueryObject qo);
     void delete(Long id);
+    User findByUsername(String username);
+    Set<String> getRoleNamesByUserId(Long userId);
+    Set<String> getPermissionsNameByRoleNames(Set<String> roleNames);
 }

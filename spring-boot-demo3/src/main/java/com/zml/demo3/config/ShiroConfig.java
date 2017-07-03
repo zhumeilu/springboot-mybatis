@@ -6,6 +6,7 @@ package com.zml.demo3.config;/**
  * To change this template use File | Settings | File Templates.
  */
 
+import com.zml.demo3.model.User;
 import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -16,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.servlet.DispatcherType;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,8 +45,15 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager());
         shiroFilterFactoryBean.setLoginUrl("/login");
-        shiroFilterFactoryBean.setUnauthorizedUrl("/unauthor");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/unauth");
+        shiroFilterFactoryBean.setSuccessUrl("/");
+        Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();
 
+        filterChainDefinitionMap.put("/login","anon");
+//        filterChainDefinitionMap.put("/users","anon");
+//        filterChainDefinitionMap.put("/users/**","anon");
+        filterChainDefinitionMap.put("/**","authc");
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
 
         return  shiroFilterFactoryBean;
@@ -52,10 +62,10 @@ public class ShiroConfig {
     @Bean("securityManager")
     public DefaultWebSecurityManager securityManager(){
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-
+        securityManager.setRealm(userRealm());
         return securityManager;
     }
-    @Bean("sessionManager")
+  /*  @Bean("sessionManager")
     public DefaultSessionManager sessionManager(){
         DefaultSessionManager sessionManager = new DefaultSessionManager();
         return sessionManager;
@@ -63,5 +73,10 @@ public class ShiroConfig {
     @Bean
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor(){
         return new LifecycleBeanPostProcessor();
+    }*/
+    @Bean
+    public UserRealm userRealm(){
+        UserRealm userRealm = new UserRealm();
+        return userRealm;
     }
 }

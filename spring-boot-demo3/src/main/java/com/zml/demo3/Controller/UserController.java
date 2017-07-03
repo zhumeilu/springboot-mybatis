@@ -26,7 +26,7 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-    @RequestMapping(value = "/",method = RequestMethod.GET)
+    @RequestMapping(value = "",method = RequestMethod.GET)
     public List<User> list(UserQueryObject qo){
         List<User> list = userService.list(qo);
         return list;

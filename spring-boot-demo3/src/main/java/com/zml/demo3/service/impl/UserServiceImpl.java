@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -52,6 +53,21 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void delete(Long id) {
         userMapper.delete(id);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userMapper.findByUsername(username);
+    }
+
+    @Override
+    public Set<String> getRoleNamesByUserId(Long userId) {
+        return userMapper.getRoleNamesByUserId(userId);
+    }
+
+    @Override
+    public Set<String> getPermissionsNameByRoleNames(Set<String> roleNames) {
+        return userMapper.getPermissionsNameByRoleNames(roleNames);
     }
 
 }

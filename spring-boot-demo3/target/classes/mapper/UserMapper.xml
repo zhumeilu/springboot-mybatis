@@ -33,5 +33,24 @@
     from user
     limit #{start},#{pageSize}
   </select>
+<select id="findByUsername" resultType="User">
+    SELECT *
+    from USER
+    where username=#{username}
 
+</select>
+    <!--通过用户id获取角色名-->
+    <select id="getRoleNamesByUserId" resultType="string">
+        SELECT roleName from role r left join user_role ur on r.id = ur.roleId left join user u on ur.userId = u.id
+         where u.id=#{userId}
+    </select>
+    <!--通过用户id获取权限名-->
+    <select id="getPermissionsNameByRoleNames" resultType="string">
+      select permissionName from permission p left join role_permission rp on rp.permissionId=p.id left join role r on r.id = rp.roleId
+      where r.roleName in
+        <foreach collection="roleNames"  index="index" item="item" open="("
+                 separator="," close=")">
+           #{item}
+        </foreach>
+    </select>
 </mapper>
