@@ -6,11 +6,12 @@ package com.zml.demo3.config;/**
  * To change this template use File | Settings | File Templates.
  */
 
-import com.zml.demo3.model.User;
-import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -79,4 +80,21 @@ public class ShiroConfig {
         UserRealm userRealm = new UserRealm();
         return userRealm;
     }
+    @Bean
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor(){
+        return new LifecycleBeanPostProcessor();
+    }
+    @Bean
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator(){
+        DefaultAdvisorAutoProxyCreator creator=new DefaultAdvisorAutoProxyCreator();
+        creator.setProxyTargetClass(true);
+        return creator;
+    }
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(@Qualifier("securityManager") DefaultWebSecurityManager manager) {
+        AuthorizationAttributeSourceAdvisor advisor=new AuthorizationAttributeSourceAdvisor();
+        advisor.setSecurityManager(manager);
+        return advisor;
+    }
 }
+
